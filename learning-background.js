@@ -79,10 +79,10 @@
     const question = short(message.question, 4000);
     if (!question) throw new Error("Type or say your question first.");
     let scope = message.notesScope || "none";
-    if (scope === "auto") scope = /笔记|生词|notes|saved words/i.test(question) ? (/本视频|当前视频|this video/i.test(question) ? "video" : String(Number(/(?:最近|latest|recent|last)\s*(10|20|30|50)/i.exec(question)?.[1]) || 20)) : "none";
+    if (scope === "auto") scope = /笔记|生词|notes|saved words/i.test(question) ? (/本视频|当前视频|this video/i.test(question) ? "video" : "10") : "none";
     const savedNotes = [];
     let totalNotes = 0;
-    if (["video", "all", "10", "20", "30", "50"].includes(scope)) {
+    if (["video", "all", "10"].includes(scope)) {
       const stored = await chrome.storage.local.get("ytd_notes");
       const notes = (Array.isArray(stored.ytd_notes) ? stored.ytd_notes : []).filter(n => scope !== "video" || n.videoId === message.videoId)
         .sort((a,b) => (Number(b.createdAt)||0)-(Number(a.createdAt)||0));
