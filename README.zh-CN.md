@@ -8,7 +8,7 @@
 
 ## 安装
 
-1. 打开 https://github.com/wuyongxian123/YouTube-Learn ，点击 Code → Download ZIP。
+1. 打开 https://github.com/wuyongxian123/youtube-english-learning-extension ，点击 Code → Download ZIP。
 2. 解压到长期保留的文件夹。
 3. 打开 chrome://extensions，启用“开发者模式”，点击“加载已解压的扩展程序”。
 4. 选择包含 manifest.json 的文件夹。
