@@ -4,7 +4,7 @@
 
 使用 YouTube 字幕、查词卡片、笔记和 AI 问答学习英语的 Chrome 扩展。
 
-本项目基于 [Zara Zhang 的 YouTube Digest](https://github.com/zarazhangrui/youtube-digest) 修改，保留原始 [MIT 许可证和版权声明](LICENSE)。本修改版独立维护，不是 YouTube 官方产品。
+本项目基于 [Zara Zhang 的 YouTube Digest](https://github.com/zarazhangrui/youtube-digest) 修改。原项目版权 © 2026 Zara Zhang；YouTube Learn 的新增修改版权 © 2026 wuyongxian123；均按 [MIT 许可证](LICENSE) 提供。本修改版独立维护，不是 YouTube 官方产品。
 
 ## 安装
 
