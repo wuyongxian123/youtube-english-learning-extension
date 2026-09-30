@@ -1,0 +1,11 @@
+.env
+.env.*
+*.key
+*.pem
+node_modules/
+dist/
+browser-profile/
+*backup*/
+install-*.ps1
+install-result.json
+*-preview.png
