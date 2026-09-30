@@ -8,7 +8,7 @@ Based on [YouTube Digest by Zara Zhang](https://github.com/zarazhangrui/youtube-
 
 ## Install
 
-1. Open https://github.com/wuyongxian123/YouTube-Learn and choose Code > Download ZIP.
+1. Open https://github.com/wuyongxian123/youtube-english-learning-extension and choose Code > Download ZIP.
 2. Extract into a permanent folder.
 3. Open chrome://extensions, enable Developer mode, select Load unpacked, and choose the folder containing manifest.json.
 4. Enter your own Supadata and DeepSeek API keys in Settings. Open a YouTube video and select Learn.
