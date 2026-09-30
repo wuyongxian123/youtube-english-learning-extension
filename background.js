@@ -735,11 +735,15 @@ async function fetchTranscriptOnce(videoId) {
         };
       }
       if (response.status === 429) {
+        const detail =
+          typeof errorData.details === "string" && errorData.details.trim()
+            ? ` ${errorData.details.trim()}`
+            : "";
         return {
           success: false,
           error: "RATE_LIMITED",
           message:
-            "Supadata rate limit reached. Please wait a minute and try again.",
+            `Supadata rejected this request.${detail} Check your Supadata dashboard for rate or plan limits.`,
         };
       }
       throw new Error(
