@@ -4,7 +4,7 @@
 
 Learn English with YouTube captions, dictionary cards, editable notes and AI questions.
 
-Based on [YouTube Digest by Zara Zhang](https://github.com/zarazhangrui/youtube-digest). The original MIT license and copyright notice are preserved in [LICENSE](LICENSE). Independently maintained; not an official YouTube product.
+Based on [YouTube Digest by Zara Zhang](https://github.com/zarazhangrui/youtube-digest). Original work copyright © 2026 Zara Zhang; YouTube Learn modifications copyright © 2026 wuyongxian123. Both are available under the [MIT License](LICENSE). Independently maintained; not an official YouTube product.
 
 ## Install
 
