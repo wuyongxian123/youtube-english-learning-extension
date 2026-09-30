@@ -37,6 +37,9 @@ async function getSettings() {
 }
 
 const promptFileCache = new Map();
+const transcriptRequests = new Map();
+const TRANSCRIPT_RATE_LIMIT_COOLDOWN_MS = 60_000;
+let transcriptRateLimitedUntil = 0;
 
 async function loadPromptSection(fileName, heading, variables = {}) {
   let markdown = promptFileCache.get(fileName);
@@ -646,7 +649,31 @@ async function getPlayerVideoDetails(tabId) {
  * @param {string} videoId - The YouTube video ID (e.g., "dQw4w9WgXcQ")
  * @returns {Object} - { success, transcript, transcriptText, language } or { success: false, error }
  */
-async function handleFetchTranscript(videoId) {
+function handleFetchTranscript(videoId) {
+  if (Date.now() < transcriptRateLimitedUntil) {
+    return Promise.resolve({
+      success: false,
+      error: "RATE_LIMITED",
+      message: "Supadata rate limit reached. Please wait a minute and try again.",
+    });
+  }
+
+  const existingRequest = transcriptRequests.get(videoId);
+  if (existingRequest) return existingRequest;
+
+  const request = fetchTranscriptOnce(videoId)
+    .then((result) => {
+      if (result?.error === "RATE_LIMITED") {
+        transcriptRateLimitedUntil = Date.now() + TRANSCRIPT_RATE_LIMIT_COOLDOWN_MS;
+      }
+      return result;
+    })
+    .finally(() => transcriptRequests.delete(videoId));
+  transcriptRequests.set(videoId, request);
+  return request;
+}
+
+async function fetchTranscriptOnce(videoId) {
   try {
     const settings = await getSettings();
     if (!settings.supadataApiKey) {
