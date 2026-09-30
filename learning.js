@@ -294,7 +294,7 @@
     if (mode === "note") chrome.storage.local.get(draftKey).then(data => { if (!dirty && drawer.isConnected) input.value = data[draftKey] || ""; }).catch(() => {});
     drawer.append(label, input);
     if (mode === "chat") {
-      const template = "把笔记中【最近20个】单词串成一个【爱情】故事";
+      const template = "把笔记中【最近10个】单词串成一个【爱情】故事";
       const hint = make("div", undefined, "learning-prompt-template");
       hint.append(make("span", `可参考提示词：${template}`));
       hint.append(button("填入提示词", () => {
@@ -306,7 +306,7 @@
     const notesArea = make("div", undefined, "learning-notes-access");
     if (mode === "chat") {
       const noteLabel = make("label", "参考笔记 ");
-      for (const [value, title] of [["auto","自动（提到笔记时）"],["none","不使用笔记"],["video","本视频"],["all","所有笔记"],["10","最近10个"],["20","最近20个"],["30","最近30个"],["50","最近50个"]]) {
+      for (const [value, title] of [["auto","自动（提到笔记时）"],["none","不使用笔记"],["video","本视频"],["all","所有笔记"]]) {
         const option = make("option",title); option.value=value; notesScope.append(option);
       }
       noteLabel.append(notesScope); notesArea.append(noteLabel,make("p","所选笔记会随提问发送给 AI。按保存时间去重；所有笔记最多100个，过长时截取。","learning-status"));
@@ -525,13 +525,6 @@
       document.documentElement.style.setProperty("--learning-font-size", `${size.value}px`);
       chrome.storage.local.set({ learning_font_size: Number(size.value) });
     });
-    const refineRow = make("details", undefined, "learning-refine");
-    refineRow.append(make("summary", "Subtitle tools"));
-    const status = make("p", "One sentence per paragraph. Captions without punctuation use AI sentence breaks and your AI credits.", "learning-hint");
-    status.id = "learningRefineStatus";
-    const refine = button("AI sentence breaks", () => refineSentences(refine, status));
-    refine.id = "learningRefineButton";
-    refineRow.append(refine, status); $("transcriptList").before(refineRow);
     const saved = await chrome.storage.local.get("learning_font_size");
     const savedSize = Number(saved.learning_font_size);
     size.value = String(savedSize === 10 ? 12 : [12,15,20].includes(savedSize) ? savedSize : 15);
