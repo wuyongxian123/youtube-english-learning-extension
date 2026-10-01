@@ -74,6 +74,8 @@ body, button, input, textarea, select { font-family: Arial, sans-serif; }
 .learning-chat p { padding: 6px 0; margin: 6px 0; }
 .learning-card .learning-close { background: #c62828; border-color: #c62828; color: white; font-weight: 700; }
 .learning-card .learning-language[aria-pressed="true"] { background: var(--accent); color: white; }
+html[data-learning-language-mode="original"] .tab small,
+html[data-learning-language-mode="original"] .learning-size-label small { display: none; }
 .learning-chinese { border-left: 2px solid var(--accent); padding-left: 8px; color: var(--text-secondary); }
 .learning-drawer .learning-voice { font-size: 28px; min-width: 52px; min-height: 44px; padding: 4px 10px; }
 .transcript-entry .transcript-text, .transcript-entry .transcript-original,
