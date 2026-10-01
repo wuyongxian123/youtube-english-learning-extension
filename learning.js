@@ -306,7 +306,7 @@
     const notesArea = make("div", undefined, "learning-notes-access");
     if (mode === "chat") {
       const noteLabel = make("label", "参考笔记 ");
-      for (const [value, title] of [["auto","自动（提到笔记时）"],["none","不使用笔记"],["video","本视频"],["all","所有笔记"]]) {
+      for (const [value, title] of [["auto","自动（提到笔记时）"],["none","不使用笔记"]]) {
         const option = make("option",title); option.value=value; notesScope.append(option);
       }
       noteLabel.append(notesScope); notesArea.append(noteLabel,make("p","所选笔记会随提问发送给 AI。按保存时间去重；所有笔记最多100个，过长时截取。","learning-status"));
