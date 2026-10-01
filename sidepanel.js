@@ -643,12 +643,6 @@ async function startDigest(videoId, videoUrl) {
     // Always render transcript first
     renderTranscript();
 
-    // Render analysis if we have it cached
-    if (currentAnalysis) {
-      renderAnalysisResults(currentAnalysis);
-      highlightMomentsOnPage(currentAnalysis.keyMoments);
-    }
-
     showState("results");
     document.getElementById("tabsNav").style.display = "flex";
     restorePendingTranscriptViewState(videoId);
@@ -1497,13 +1491,7 @@ function switchTab(tabName) {
 
   // Translate only the visible tab. This prevents hidden surfaces from using
   // tokens or competing with the batch queue the user is waiting for.
-  if (tabName === "overview") {
-    if (!currentAnalysis && !isAnalysisLoading) {
-      triggerAnalysis();
-    } else if (currentAnalysis && currentTranscriptMode !== "original") {
-      void translateOverviewContent();
-    }
-  } else if (
+  if (
     tabName === "notes" &&
     currentTranscriptMode !== "original"
   ) {
@@ -2148,8 +2136,6 @@ function renderNotes(notes, filteredVideoId) {
       <div class="note-text">${renderLocalizedContent(note.text, "notes", translationId)}</div>
       <div class="note-actions">
         <button class="note-action-btn note-copy-text">Copy text</button>
-        <button class="note-action-btn note-copy-link" data-url="${escapeHtml(note.timestampedUrl)}">Copy timestamp</button>
-        <button class="note-action-btn note-play" data-seconds="${Number(note.timestampSeconds) || 0}">Play</button>
         <button class="note-delete" data-id="${escapeHtml(note.id)}" type="button" aria-label="Delete note" title="Delete note">
           <svg viewBox="0 0 24 24" aria-hidden="true">
             <path d="M3 6h18"></path>
@@ -2193,27 +2179,6 @@ function renderNotes(notes, filteredVideoId) {
           console.error("Copy failed:", err);
         }
       });
-
-    // Copy timestamp button — copies the timestamped YouTube link
-    noteEl
-      .querySelector(".note-copy-link")
-      .addEventListener("click", async () => {
-        try {
-          await navigator.clipboard.writeText(note.timestampedUrl);
-          const btn = noteEl.querySelector(".note-copy-link");
-          btn.textContent = "Copied";
-          setTimeout(() => {
-            btn.textContent = "Copy timestamp";
-          }, 2000);
-        } catch (err) {
-          console.error("Copy failed:", err);
-        }
-      });
-
-    // Play button (in this tab if it's the current video, else a new tab)
-    noteEl.querySelector(".note-play").addEventListener("click", () => {
-      playNote(note);
-    });
 
     window.ytdLearning?.addNotePronunciation(noteEl, note);
     notesList.appendChild(noteEl);
@@ -2599,6 +2564,9 @@ function transcriptTranslationCacheKey(segment) {
 }
 
 function setTranscriptModeButtons(mode) {
+  if (document.documentElement) {
+    document.documentElement.dataset.learningLanguageMode = mode;
+  }
   document.querySelectorAll(".transcript-mode-btn").forEach((button) => {
     const active = button.dataset.transcriptMode === mode;
     button.classList.toggle("active", active);
@@ -2624,20 +2592,14 @@ async function handleDisplayLanguageModeChange(mode) {
 
   if (mode === "original") {
     renderTranscript();
-    if (currentAnalysis) renderAnalysisResults(currentAnalysis);
     if (currentNotes.length) renderNotes(currentNotes, currentNotesFilterVideoId);
     return;
   }
 
-  if (currentAnalysis) {
-    renderAnalysisResults(currentAnalysis);
-  }
   if (currentNotes.length) {
     renderNotes(currentNotes, currentNotesFilterVideoId);
   }
-  if (activeTabName === "overview" && currentAnalysis) {
-    await translateOverviewContent();
-  } else if (activeTabName === "notes" && currentNotes.length) {
+  if (activeTabName === "notes" && currentNotes.length) {
     await translateNotesContent();
   } else if (activeTabName === "transcript") {
     await translateTranscript();
